@@ -5,5 +5,21 @@
 </ion-header>
 
 <ion-content>
-
+<!--  note: we use ion-tabs to add the tabs-->
+<ion-tabs>
+<!--  note: tab-bar to add tab button , you should provide the slot for position-->
+  <ion-tab-bar slot="bottom">
+<!--    note: every button should contain tab -->
+    <ion-tab-button tab="discover">
+<!--      note:for text-->
+      <ion-label>Discover</ion-label>
+<!--      note:for icons-->
+      <ion-icon name="search"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="offers">
+      <ion-label>offers</ion-label>
+      <ion-icon name="card"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
 </ion-content>
