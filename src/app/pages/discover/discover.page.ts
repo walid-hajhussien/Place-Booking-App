@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
+import {MenuController} from '@ionic/angular';
 
 @Component({
     selector: 'app-discover',
@@ -11,7 +12,7 @@ export class DiscoverPage implements OnInit {
     public places: PlaceModel[];
     public selected: PlaceModel;
 
-    constructor(private placesService: PlacesService) {
+    constructor(private placesService: PlacesService, private menuController: MenuController) {
     }
 
     ngOnInit() {
@@ -22,6 +23,10 @@ export class DiscoverPage implements OnInit {
 
     onSelect(place: PlaceModel): void {
         this.selected = place;
+    }
+
+    onOpenMenu() {
+        this.menuController.toggle('m1');
     }
 
 }
