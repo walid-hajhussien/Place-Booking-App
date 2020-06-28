@@ -1,9 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>offers</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>offers</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col class="ion-text-center" size="12" size-sm="8" offset-sm="2">
+                <ion-list>
+                    <ion-item *ngFor="let offer of offerPlaces;let i = index" detail="true"
+                              [routerLink]="['/','places','offers',offer.id]" routerDirection="forward">
+                        <ion-thumbnail slot="start">
+                            <ion-img [src]="offer.imageUrl"></ion-img>
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h>{{offer.title}}</h>
+                            <p>{{offer.description}}</p>
+                        </ion-label>
+                        <ion-label class="ion-padding ion-text-right">
+                            {{offer.price * 0.1|currency}}
+                        </ion-label>
 
+
+                    </ion-item>
+
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
