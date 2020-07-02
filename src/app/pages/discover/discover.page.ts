@@ -74,5 +74,8 @@ export class DiscoverPage implements OnInit {
         }, 500);
     }
 
+    onSegmentChange(event: any) {
+        console.log(event.detail);
+    }
 
 }
