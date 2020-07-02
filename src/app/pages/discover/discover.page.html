@@ -26,35 +26,85 @@
                         <ion-img [src]="selected.imageUrl"></ion-img>
                     </ion-card-header>
                     <ion-card-content>
-                        <p><ion-text color="danger">{{selected.description}}</ion-text></p>
+                        <p>
+                            <ion-text color="danger">{{selected.description}}</ion-text>
+                        </p>
                     </ion-card-content>
-                  <div class="ion-padding ion-text-right">
-                    <ion-button fill="clear" color="primary" routerDirection="forward" [routerLink]="['/','places','discover',selected.id]">
-                      More
-                    </ion-button>
-                  </div>
+                    <div class="ion-padding ion-text-right">
+                        <ion-button fill="clear" color="primary" routerDirection="forward"
+                                    [routerLink]="['/','places','discover',selected.id]">
+                            More
+                        </ion-button>
+                    </div>
                 </ion-card>
             </ion-col>
         </ion-row>
-
-        <ion-row>
+        <!-- infinite-scroll -->
+        <ion-row *ngIf="type==='infinite-scroll'">
             <ion-col class="ion-text-center" size="12" size-sm="8" offset-sm="2">
-                <ion-list>
-                    <ion-item *ngFor="let place of places; let i = index" (click)="onSelect(place)"  detail="true">
-                        <ion-thumbnail slot="start" >
-                            <ion-img [src]="place.imageUrl">
-                            </ion-img>
-                        </ion-thumbnail>
-                        <ion-label>
-                            <h>{{place.title}}</h>
-                            <p>{{place.description}}</p>
-                        </ion-label>
-                    </ion-item>
-                </ion-list>
-
+                <ion-item *ngFor="let place of places" (click)="onSelect(place)" detail="true">
+                    <ion-thumbnail slot="start">
+                        <ion-img [src]="place.imageUrl">
+                        </ion-img>
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h>{{place.title}}</h>
+                        <p>{{place.description}}</p>
+                    </ion-label>
+                </ion-item>
             </ion-col>
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+                <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
         </ion-row>
 
     </ion-grid>
+
+
+    <!-- virtual-scroll & infinite-scroll -->
+    <ion-list *ngIf="type==='infinite-scroll&virtual-scroll'">
+
+        <ion-virtual-scroll [items]="places" approxItemHeight="100px">
+
+            <ion-item *virtualItem="let place" (click)="onSelect(place)" detail="true">
+                <ion-thumbnail slot="start">
+                    <ion-img [src]="place.imageUrl">
+                    </ion-img>
+                </ion-thumbnail>
+                <ion-label>
+                    <h>{{place.title}}</h>
+                    <p>{{place.description}}</p>
+                </ion-label>
+            </ion-item>
+
+        </ion-virtual-scroll>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+
+    </ion-list>
+
+    <!--     virtual-scroll-->
+    <ion-list *ngIf="type==='virtual-scroll'">
+
+        <ion-virtual-scroll [items]="places" approxItemHeight="100px">
+
+            <ion-item *virtualItem="let place" (click)="onSelect(place)" detail="true">
+                <ion-thumbnail slot="start">
+                    <ion-img [src]="place.imageUrl">
+                    </ion-img>
+                </ion-thumbnail>
+                <ion-label>
+                    <h>{{place.title}}</h>
+                    <p>{{place.description}}</p>
+                </ion-label>
+            </ion-item>
+
+        </ion-virtual-scroll>
+
+    </ion-list>
+
 
 </ion-content>
