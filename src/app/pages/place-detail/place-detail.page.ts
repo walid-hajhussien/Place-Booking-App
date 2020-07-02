@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalController, NavController} from '@ionic/angular';
+import {ActionSheetController, ModalController, NavController} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
@@ -18,7 +18,8 @@ export class PlaceDetailPage implements OnInit {
         private navController: NavController,
         private activatedRoute: ActivatedRoute,
         private placesService: PlacesService,
-        private modalController: ModalController
+        private modalController: ModalController,
+        private actionSheetController: ActionSheetController
     ) {
     }
 
@@ -34,10 +35,36 @@ export class PlaceDetailPage implements OnInit {
         });
     }
 
+    // note : book using modal
     onBook() {
-        // this.navController.navigateBack(['/', 'places', 'discover']);
-        // note: using pop
-        // this.navController.pop();
+        this.actionSheetController.create({
+            header: 'Choose an Action',
+            buttons: [
+                {
+                    text: 'Select Date',
+                    handler: () => {
+                        this.openBookingModal('select');
+                    }
+                },
+                {
+                    text: 'Random Date',
+                    handler: () => {
+                        this.openBookingModal('random');
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel'
+                }
+            ]
+        }).then((actionEl: HTMLIonActionSheetElement) => {
+            actionEl.present();
+        });
+    }
+
+    // note: book using
+    openBookingModal(modal: 'select' | 'random') {
+        console.log(modal);
         this.modalController.create({
             component: BookingModalComponent,
             componentProps: {selectedPlace: this.place}
@@ -53,5 +80,6 @@ export class PlaceDetailPage implements OnInit {
             }
 
         });
+
     }
 }
