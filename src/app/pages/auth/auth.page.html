@@ -1,13 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Authentication</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Authentication</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<ion-button color="primary" (click)="onLogin()">Login</ion-button>
-  <ion-item>
-    <ion-label position="floating">E-Mail</ion-label>
-    <ion-input></ion-input>
-  </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">E-Mail</ion-label>
+        <ion-input></ion-input>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngIf="!isLoading">
+                <ion-button expand="block" color="primary" (click)="onLogin()">Login</ion-button>
+            </ion-col>
+            <!-- non-overlay loader-->
+            <ion-col *ngIf="isLoading" size="12" class="ion-text-center">
+                <ion-spinner color="primary" name="lines"></ion-spinner>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
