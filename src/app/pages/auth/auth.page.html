@@ -12,20 +12,21 @@
                     <ion-list>
                         <ion-item>
                             <ion-label position="floating">E-Mail</ion-label>
-                            <ion-input ngModel name="email" email required type="email"></ion-input>
+                            <ion-input #emailInput="ngModel" ngModel name="email" email required type="email"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">Password</ion-label>
-                            <ion-input type="password" ngModel name="password" required="true"
+                            <ion-input #passwordInput="ngModel" type="password" ngModel name="password" required="true"
                                        minlength="6"></ion-input>
                         </ion-item>
 
                     </ion-list>
                 </ion-col>
             </ion-row>
+
             <ion-row>
                 <ion-col *ngIf="!isLoading" size="12" size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-                    <ion-button expand="block" type="submit">Login</ion-button>
+                    <ion-button expand="block" type="submit" [disabled]="emailInput.invalid || passwordInput.invalid">Login</ion-button>
                 </ion-col>
                 <ion-col *ngIf="!isLoading" size="12" size-md="8" offset-md="2" size-lg="6" offset-lg="3">
                     <ion-button expand="block" fill="clear" type="button">
@@ -37,6 +38,19 @@
                 <ion-col *ngIf="isLoading" size="12" class="ion-text-center">
                     <ion-spinner color="primary" name="lines"></ion-spinner>
                 </ion-col>
+            </ion-row>
+
+            <ion-row>
+                    <ion-col size="12" class="ion-no-padding ion-no-margin" >
+                        <ul class="errorList ion-no-margin" >
+                            <li *ngIf="emailInput.invalid && emailInput.touched">
+                                Email Not Valid!
+                            </li>
+                            <li *ngIf="passwordInput.invalid && passwordInput.touched">
+                                Password Length Should Be 6 character long!
+                            </li>
+                        </ul>
+                    </ion-col>
             </ion-row>
         </ion-grid>
     </form>

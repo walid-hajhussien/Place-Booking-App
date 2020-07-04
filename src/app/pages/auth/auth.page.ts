@@ -11,9 +11,11 @@ import {NgForm} from '@angular/forms';
 })
 export class AuthPage implements OnInit {
     public isLoading: boolean;
+    public errorMessage: string[];
 
     constructor(private authService: AuthService, private router: Router, private loadingController: LoadingController) {
         this.isLoading = false;
+        this.errorMessage = ['ddd'];
     }
 
     ngOnInit() {
