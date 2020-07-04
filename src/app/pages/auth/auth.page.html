@@ -5,37 +5,39 @@
 </ion-header>
 
 <ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <ion-list>
-                    <ion-item>
-                        <ion-label position="floating">E-Mail</ion-label>
-                        <ion-input type="text"></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label position="floating">Password</ion-label>
-                        <ion-input type="password" ></ion-input>
-                    </ion-item>
+    <form #authForm="ngForm" (ngSubmit)="onLogin(authForm)">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                        <ion-item>
+                            <ion-label position="floating">E-Mail</ion-label>
+                            <ion-input ngModel name="email" email required type="email"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">Password</ion-label>
+                            <ion-input type="password" ngModel name="password" required="true"
+                                       minlength="6"></ion-input>
+                        </ion-item>
 
-                </ion-list>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col *ngIf="!isLoading" size="12">
-                <ion-button expand="block" (click)="onLogin()">Login</ion-button>
-            </ion-col>
-            <ion-col *ngIf="!isLoading">
-                <ion-button expand="block" fill="clear" (click)="onLogin()">
-                    <ion-text class="ion-padding-horizontal">SignUp</ion-text>
-                    <ion-icon name="log-out-outline"></ion-icon>
-                </ion-button>
-            </ion-col>
-            <!-- non-overlay loader-->
-            <ion-col *ngIf="isLoading" size="12" class="ion-text-center">
-                <ion-spinner color="primary" name="lines"></ion-spinner>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col *ngIf="!isLoading" size="12" size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+                    <ion-button expand="block" type="submit">Login</ion-button>
+                </ion-col>
+                <ion-col *ngIf="!isLoading" size="12" size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+                    <ion-button expand="block" fill="clear" type="button">
+                        <ion-text class="ion-padding-horizontal">SignUp</ion-text>
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </ion-button>
+                </ion-col>
+                <!-- non-overlay loader-->
+                <ion-col *ngIf="isLoading" size="12" class="ion-text-center">
+                    <ion-spinner color="primary" name="lines"></ion-spinner>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>
