@@ -15,7 +15,7 @@ export class DiscoverPage implements OnInit {
     public type: 'infinite-scroll' | 'virtual-scroll' | 'infinite-scroll&virtual-scroll';
 
     constructor(private placesService: PlacesService, private menuController: MenuController) {
-        this.type = 'virtual-scroll';
+        this.type = 'infinite-scroll&virtual-scroll';
     }
 
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
