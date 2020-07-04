@@ -3,6 +3,7 @@ import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {NgForm} from '@angular/forms';
+import {LoginModel} from '../../models/login/login.model';
 
 @Component({
     selector: 'app-login',
@@ -11,19 +12,16 @@ import {NgForm} from '@angular/forms';
 })
 export class LoginPage implements OnInit {
     public isLoading: boolean;
-    public errorMessage: string[];
-    public isLoginMode: boolean;
 
     constructor(private authService: AuthService, private router: Router, private loadingController: LoadingController) {
         this.isLoading = false;
-        this.isLoginMode = true;
     }
 
     ngOnInit() {
     }
 
     onLogin(loginForm: NgForm) {
-        console.log(loginForm);
+        const loginInfo = new LoginModel(loginForm.value.email, loginForm.value.password);
         // note : keyboardClose to close the phone keyboard
         this.loadingController.create({
             message: 'Loading..',
@@ -38,10 +36,6 @@ export class LoginPage implements OnInit {
                 this.router.navigate(['/', 'places']);
             }, 2000);
         });
-    }
-
-    onSwitchAuthMode() {
-        this.isLoginMode = !this.isLoginMode;
     }
 
 }
