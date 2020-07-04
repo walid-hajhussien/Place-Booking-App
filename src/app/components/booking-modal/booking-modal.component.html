@@ -45,6 +45,8 @@
                     <ion-label color="medium" position="floating">From</ion-label>
                     <ion-datetime
                             #fromDate="ngModel"
+                            [min]="selectedPlace.availableFrom.toISOString()"
+                            [max]="selectedPlace.availableTo.toISOString()"
                             display-format="MMM DD YYYY"
                             picker-format="YY MMM DD"
                             ngModel name="date-from" required="true"></ion-datetime>
@@ -60,6 +62,7 @@
                             display-format="MMM DD YYYY"
                             picker-format="YY MMM DD"
                             [min]="fromDate.value"
+                            [max]="selectedPlace.availableTo.toISOString()"
                             ngModel name="date-to" required="true"></ion-datetime>
                 </ion-item>
             </ion-col>
