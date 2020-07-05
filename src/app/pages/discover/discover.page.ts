@@ -38,7 +38,8 @@ export class DiscoverPage implements OnInit {
                 faker.image.city(),
                 10,
                 new Date('2020-01-01'),
-                new Date('2020-12-31')
+                new Date('2020-12-31'),
+                faker.company.suffixes
             ));
         }
     }
