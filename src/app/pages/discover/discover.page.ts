@@ -4,6 +4,7 @@ import {PlaceModel} from '../../models/placeModel/place.model';
 import {IonInfiniteScroll, IonVirtualScroll, MenuController} from '@ionic/angular';
 import * as faker from 'faker';
 import {Subscription} from 'rxjs';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
     selector: 'app-discover',
@@ -15,9 +16,13 @@ export class DiscoverPage implements OnInit, OnDestroy {
     public places: PlaceModel[];
     public selected: PlaceModel;
     public type: 'infinite-scroll' | 'virtual-scroll' | 'infinite-scroll&virtual-scroll';
+    public filterType: 'all' | 'bookable';
+    public userId: string;
 
-    constructor(private placesService: PlacesService, private menuController: MenuController) {
+    constructor(private placesService: PlacesService, private menuController: MenuController, private authService: AuthService) {
         this.type = 'infinite-scroll&virtual-scroll';
+        this.filterType = 'all';
+        this.userId = this.authService.userId;
     }
 
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -36,18 +41,21 @@ export class DiscoverPage implements OnInit, OnDestroy {
     }
 
     getPlaces() {
-        for (let i = 0; i < 20; i++) {
-            this.places.push(new PlaceModel(
-                faker.address.zipCode(),
-                faker.name.firstName(),
-                faker.company.catchPhraseDescriptor(),
-                faker.image.city(),
-                10,
-                new Date('2020-01-01'),
-                new Date('2020-12-31'),
-                faker.company.suffixes
-            ));
+        if (this.filterType === 'all') {
+            for (let i = 0; i < 20; i++) {
+                this.places.push(new PlaceModel(
+                    faker.address.zipCode(),
+                    faker.name.firstName(),
+                    faker.company.catchPhraseDescriptor(),
+                    faker.image.city(),
+                    10,
+                    new Date('2020-01-01'),
+                    new Date('2020-12-31'),
+                    faker.company.suffixes
+                ));
+            }
         }
+
     }
 
     onSelect(place: PlaceModel): void {
@@ -84,7 +92,23 @@ export class DiscoverPage implements OnInit, OnDestroy {
     }
 
     onSegmentChange(event: any) {
-        console.log(event.detail);
+        switch (event.detail.value) {
+            case 'all':
+                this.places = this.placesService.places;
+                this.filterType = 'all';
+                break;
+            case 'bookable':
+                this.filterType = 'bookable';
+                this.places = this.places.filter((place) => {
+                    return place.userId === this.userId;
+                });
+                this.selected = this.places[0];
+                break;
+            default:
+                this.places = this.placesService.places;
+                this.filterType = 'all';
+                break;
+        }
     }
 
     ngOnDestroy(): void {
