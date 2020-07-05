@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {NavController} from '@ionic/angular';
+import {LoadingController, NavController} from '@ionic/angular';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {map} from 'rxjs/operators';
+import {delay, map, take} from 'rxjs/operators';
 
 @Component({
     selector: 'app-edit-offer',
@@ -16,7 +16,7 @@ export class EditOfferPage implements OnInit {
     place: PlaceModel;
     placeId: string;
 
-    constructor(private activatedRoute: ActivatedRoute, private navController: NavController, private placesService: PlacesService) {
+    constructor(private activatedRoute: ActivatedRoute, private navController: NavController, private placesService: PlacesService, private loadingController: LoadingController) {
 
     }
 
@@ -30,6 +30,7 @@ export class EditOfferPage implements OnInit {
             this.place = this.placesService.getPlaceById(this.placeId);
             return this.placeId;
         })).subscribe((id: string) => {
+            console.log(this.place)
             this.editOfferForm = new FormGroup({
                 title: new FormControl(this.place.title, {
                     updateOn: 'blur',
@@ -43,12 +44,33 @@ export class EditOfferPage implements OnInit {
                     updateOn: 'blur',
                     validators: [Validators.required, Validators.min(1)]
                 }),
+                dateFrom: new FormControl({value: this.place.availableFrom.toISOString(), disabled: true}, {
+                    updateOn: 'blur',
+                    validators: [Validators.required]
+                }),
+                dateTo: new FormControl({value: this.place.availableTo.toISOString(), disabled: true}, {
+                    updateOn: 'blur',
+                    validators: [Validators.required]
+                })
             });
         });
     }
 
     onEditPlace() {
-        console.log('Edited');
+        const newPlace: PlaceModel = {...this.place};
+        newPlace.title = this.editOfferForm.value.title;
+        newPlace.description = this.editOfferForm.value.description;
+        newPlace.price = this.editOfferForm.value.price;
+        this.loadingController.create({
+            message: 'Updating The Place...'
+        }).then((loadingEl) => {
+            loadingEl.present();
+            this.placesService.updatePlace(newPlace).pipe(take(1), delay(1000)).subscribe((isUpdated) => {
+                loadingEl.dismiss();
+                this.navController.navigateBack(['/', 'places', 'offers']);
+            });
+        });
+
     }
 
 }

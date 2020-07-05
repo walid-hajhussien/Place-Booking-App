@@ -49,4 +49,14 @@ export class PlacesService {
             observe.next(true);
         });
     }
+
+    updatePlace(newPlace: PlaceModel): Observable<boolean> {
+        return new Observable((observe) => {
+            this._places = this._places.map((place) => {
+                return (newPlace.id === place.id) ? newPlace : place;
+            });
+            this.placesChangeBehavior.next([...this._places]);
+            observe.next(true);
+        });
+    }
 }
