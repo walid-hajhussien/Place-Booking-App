@@ -13,10 +13,14 @@ export class OffersPage implements OnInit {
     offerPlaces: PlaceModel[];
 
     constructor(private placesService: PlacesService, private router: Router, private navController: NavController) {
-        this.offerPlaces = this.placesService.places;
     }
 
     ngOnInit() {
+    }
+
+    ionViewWillEnter() {
+        this.offerPlaces = this.placesService.places;
+        console.log(this.offerPlaces);
     }
 
     onEdit(id: string, itemSliding: IonItemSliding) {
