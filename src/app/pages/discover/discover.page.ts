@@ -95,6 +95,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
         switch (event.detail.value) {
             case 'all':
                 this.places = this.placesService.places;
+                this.selected = this.places[0];
                 this.filterType = 'all';
                 break;
             case 'bookable':
@@ -102,10 +103,11 @@ export class DiscoverPage implements OnInit, OnDestroy {
                 this.places = this.places.filter((place) => {
                     return place.userId === this.userId;
                 });
-                this.selected = this.places[0];
+                this.selected = (this.places.length > 0) ? this.places[0] : undefined;
                 break;
             default:
                 this.places = this.placesService.places;
+                this.selected = this.places[0];
                 this.filterType = 'all';
                 break;
         }
