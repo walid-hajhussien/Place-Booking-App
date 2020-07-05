@@ -1,15 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
 import {IonInfiniteScroll, IonVirtualScroll, MenuController} from '@ionic/angular';
 import * as faker from 'faker';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-discover',
     templateUrl: './discover.page.html',
     styleUrls: ['./discover.page.scss'],
 })
-export class DiscoverPage implements OnInit {
+export class DiscoverPage implements OnInit, OnDestroy {
+    private placeChangeEvent: Subscription;
     public places: PlaceModel[];
     public selected: PlaceModel;
     public type: 'infinite-scroll' | 'virtual-scroll' | 'infinite-scroll&virtual-scroll';
@@ -27,6 +29,10 @@ export class DiscoverPage implements OnInit {
         if (this.type === 'virtual-scroll') {
             this.getPlaces();
         }
+        // note : add event
+        this.placeChangeEvent = this.placesService.changePlacesEvent.subscribe((places) => {
+            this.places = places;
+        });
     }
 
     getPlaces() {
@@ -79,6 +85,10 @@ export class DiscoverPage implements OnInit {
 
     onSegmentChange(event: any) {
         console.log(event.detail);
+    }
+
+    ngOnDestroy(): void {
+        this.placeChangeEvent.unsubscribe();
     }
 
 }
