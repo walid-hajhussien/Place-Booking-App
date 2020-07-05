@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PlaceModel} from '../../models/placeModel/place.model';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -42,8 +42,11 @@ export class PlacesService {
         });
     }
 
-    addPlace(place: PlaceModel): void {
-        this._places.push(place);
-        this.placesChangeBehavior.next([...this._places]);
+    addPlace(place: PlaceModel): Observable<boolean> {
+        return new Observable((observe) => {
+            this._places.push(place);
+            this.placesChangeBehavior.next([...this._places]);
+            observe.next(true);
+        });
     }
 }

@@ -3,7 +3,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
-import {NavController} from '@ionic/angular';
+import {LoadingController, NavController} from '@ionic/angular';
+import {delay, take} from 'rxjs/operators';
 
 @Component({
     selector: 'app-new-offer',
@@ -13,7 +14,7 @@ import {NavController} from '@ionic/angular';
 export class NewOfferPage implements OnInit {
     offerForm: FormGroup;
 
-    constructor(private authService: AuthService, private placesService: PlacesService, private navController: NavController) {
+    constructor(private authService: AuthService, private placesService: PlacesService, private navController: NavController, private loadingController: LoadingController) {
     }
 
     ngOnInit() {
@@ -50,9 +51,15 @@ export class NewOfferPage implements OnInit {
             +this.offerForm.value.price, new Date(this.offerForm.value.dateFrom),
             new Date(this.offerForm.value.dateTo), this.authService.userId);
         console.log('offer created....', place);
-        this.placesService.addPlace(place);
-        this.offerForm.reset();
-        this.navController.navigateBack(['/', 'places', 'offers']);
+        // note: start loading
+        this.loadingController.create({message: 'Creating Place..'}).then((loadingEl) => {
+            loadingEl.present();
+            this.placesService.addPlace(place).pipe(take(1), delay(1000)).subscribe((saved) => {
+                loadingEl.dismiss();
+                this.offerForm.reset();
+                this.navController.navigateBack(['/', 'places', 'offers']);
+            });
+        });
     }
 
     onClearForm() {
