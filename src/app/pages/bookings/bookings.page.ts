@@ -23,6 +23,7 @@ export class BookingsPage implements OnInit, OnDestroy {
     }
 
     onDeleteBooking(id: string, itemSliding: IonItemSliding) {
+        this.bookingService.deleteBooking(id);
         itemSliding.close();
     }
 

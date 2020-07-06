@@ -17,6 +17,7 @@ import {delay, take} from 'rxjs/operators';
 export class PlaceDetailPage implements OnInit {
     place: PlaceModel;
     placeId: string;
+    isBookable: boolean;
 
     constructor(
         private navController: NavController,
@@ -28,6 +29,7 @@ export class PlaceDetailPage implements OnInit {
         private bookingService: BookingService,
         private loadingController: LoadingController
     ) {
+        this.isBookable = false;
     }
 
     ngOnInit() {
@@ -38,6 +40,7 @@ export class PlaceDetailPage implements OnInit {
             }
             this.placeId = paramMap.get('placeId');
             this.place = this.placesService.getPlaceById(this.placeId);
+            this.isBookable = this.place.userId === this.authService.userId;
             console.log(this.place);
         });
     }
@@ -83,8 +86,8 @@ export class PlaceDetailPage implements OnInit {
             console.log(role, data);
             if (role === 'confirm') {
                 const newBooking = new BookingModel(Math.random().toString(), this.place.id, this.authService.userId,
-                    // tslint:disable-next-line:max-line-length
-                    this.place.title, this.place.imageUrl, data.bookingData.firstName, data.bookingData.lastName, +data.bookingData.guestNumber,
+                    this.place.title, this.place.imageUrl, data.bookingData.firstName,
+                    data.bookingData.lastName, +data.bookingData.guestNumber,
                     data.bookingData.startDate, data.bookingData.endDate);
 
                 this.loadingController.create({message: 'Booking your place...'}).then((loadingEl) => {

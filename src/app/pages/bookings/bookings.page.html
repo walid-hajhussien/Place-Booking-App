@@ -9,8 +9,13 @@
 
 <ion-content>
     <ion-grid>
-        <ion-row class="ion-justify-content-center">
-            <ion-col size="10" size-md="8" size-lg="7">
+        <ion-row *ngIf="bookings.length===0">
+            <ion-col size-sm="6" offset-sm="3" class="ion-text-center" >
+                <p>No Booking Found!</p>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center" *ngIf="bookings.length>0">
+            <ion-col  size-sm="6" offset-sm="3">
                 <ion-list>
                     <ion-item-sliding *ngFor="let booking of bookings; let i = index" #itemSliding>
                         <ion-item>

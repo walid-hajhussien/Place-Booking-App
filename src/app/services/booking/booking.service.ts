@@ -29,4 +29,11 @@ export class BookingService {
             observe.next(true);
         });
     }
+
+    deleteBooking(id: string): void {
+        this._bookings = this._bookings.filter((booking) => {
+            return booking.id !== id;
+        });
+        this._changeBookingEvent.next(this._bookings);
+    }
 }
