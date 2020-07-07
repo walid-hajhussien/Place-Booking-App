@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+    production: false,
+    firebasePlaces: 'https://booking-app-f44c9.firebaseio.com/places.json'
 };
 
 /*

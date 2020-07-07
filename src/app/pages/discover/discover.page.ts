@@ -44,14 +44,14 @@ export class DiscoverPage implements OnInit, OnDestroy {
         if (this.filterType === 'all') {
             for (let i = 0; i < 20; i++) {
                 this.places.push(new PlaceModel(
-                    faker.address.zipCode(),
                     faker.name.firstName(),
                     faker.company.catchPhraseDescriptor(),
                     faker.image.city(),
                     10,
                     new Date('2020-01-01'),
                     new Date('2020-12-31'),
-                    faker.company.suffixes
+                    faker.company.suffixes,
+                    faker.address.zipCode()
                 ));
             }
         }
