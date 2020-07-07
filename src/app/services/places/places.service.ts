@@ -18,6 +18,7 @@ export class PlacesService {
     }
 
     get places(): PlaceModel[] {
+        console.log("get", this._places);
         return [...this._places];
     }
 
