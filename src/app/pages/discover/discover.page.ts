@@ -122,6 +122,13 @@ export class DiscoverPage implements OnInit, OnDestroy {
         }
     }
 
+    doRefresh(event) {
+        this.placesService.fetchPlaces().subscribe((places) => {
+            this.places = places;
+            event.target.complete();
+        });
+    }
+
     ngOnDestroy(): void {
         this.placeChangeEvent.unsubscribe();
     }
