@@ -38,28 +38,37 @@ export class PlacesService {
 
     addPlace(place: PlaceModel): Observable<{ name: string }> {
         // note : the Id will be add from firebase
-        return this.httpClient.post<{ name: string }>(environment.firebasePlaces, place)
+        return this.httpClient.post<{ name: string }>(environment.firebaseAddPlacesUrl, place)
             .pipe(tap((response) => {
                 place.id = response.name;
                 this._places.push(place);
                 this.placesChangeBehavior.next([...this._places]);
-                console.log('firbase', response);
+                console.log('firbaseAddResponse', response);
             }));
     }
 
-    updatePlace(newPlace: PlaceModel): Observable<boolean> {
-        return new Observable((observe) => {
+    updatePlace(newPlace: PlaceModel): Observable<any> {
+        return this.httpClient.put<FbUpdatePlacesInterface>(`${environment.firebaseUpdatePlacesUrl}${newPlace.id}.json`, {
+            ...newPlace,
+            id: null
+        }).pipe(map((response) => {
             this._places = this._places.map((place) => {
                 return (newPlace.id === place.id) ? newPlace : place;
             });
             this.placesChangeBehavior.next([...this._places]);
-            observe.next(true);
-        });
+            return response;
+        }));
+        // return new Observable((observe) => {
+        //     this._places = this._places.map((place) => {
+        //         return (newPlace.id === place.id) ? newPlace : place;
+        //     });
+        //     this.placesChangeBehavior.next([...this._places]);
+        //     observe.next(true);
+        // });
     }
 
     fetchPlaces(): Observable<PlaceModel[]> {
-        return this.httpClient.get<FbPlacesInterface>(environment.firebasePlaces).pipe(map((response) => {
-            console.log(response)
+        return this.httpClient.get<FbFetchPlacesInterface>(environment.firebaseAddPlacesUrl).pipe(map((response) => {
             if (!response) {
                 this._places = [];
                 this.placesChangeBehavior.next([...this._places]);

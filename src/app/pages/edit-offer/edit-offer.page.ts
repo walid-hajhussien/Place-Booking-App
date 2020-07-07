@@ -65,7 +65,7 @@ export class EditOfferPage implements OnInit {
             message: 'Updating The Place...'
         }).then((loadingEl) => {
             loadingEl.present();
-            this.placesService.updatePlace(newPlace).pipe(take(1), delay(1000)).subscribe((isUpdated) => {
+            this.placesService.updatePlace(newPlace).pipe(take(1)).subscribe((response) => {
                 loadingEl.dismiss();
                 this.navController.navigateBack(['/', 'places', 'offers']);
             });

@@ -1,4 +1,4 @@
-interface FbPlacesInterface {
+interface FbFetchPlacesInterface {
     [id: string]: {
         title: string,
         description: string,
