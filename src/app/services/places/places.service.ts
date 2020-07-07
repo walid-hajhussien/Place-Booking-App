@@ -14,8 +14,7 @@ export class PlacesService {
 
     constructor(private httpClient: HttpClient) {
         this._places = [];
-        this.placesChangeBehavior = new BehaviorSubject<PlaceModel[]>([...this._places]);
-        this.fetchPlaces().subscribe();
+        this.placesChangeBehavior = new BehaviorSubject<PlaceModel[]>(undefined);
     }
 
     get places(): PlaceModel[] {

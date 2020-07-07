@@ -5,7 +5,7 @@ import {IonInfiniteScroll, IonVirtualScroll, MenuController} from '@ionic/angula
 import * as faker from 'faker';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth/auth.service';
-import {delay} from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-discover',
@@ -19,12 +19,14 @@ export class DiscoverPage implements OnInit, OnDestroy {
     public type: 'infinite-scroll' | 'virtual-scroll' | 'infinite-scroll&virtual-scroll';
     public filterType: 'all' | 'bookable';
     public userId: string;
+    public isLoading: boolean;
 
 
     constructor(private placesService: PlacesService, private menuController: MenuController, private authService: AuthService) {
-        this.type = 'virtual-scroll';
+        this.type = 'infinite-scroll&virtual-scroll';
         this.filterType = 'all';
         this.userId = this.authService.userId;
+        this.isLoading = true;
     }
 
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -32,10 +34,19 @@ export class DiscoverPage implements OnInit, OnDestroy {
 
     ngOnInit() {
         // note : add event
-        this.placeChangeEvent = this.placesService.changePlacesEvent.subscribe((places) => {
-            this.places = places;
-            this.selected = (places.length > 0) ? places[0] : undefined;
+        this.placeChangeEvent = this.placesService.changePlacesEvent.pipe().subscribe((places) => {
+            if (!places) {
+                this.isLoading = true;
+            } else {
+                this.isLoading = false;
+                this.places = places;
+                this.selected = (places.length > 0) ? places[0] : undefined;
+            }
         });
+    }
+
+    ionViewWillEnter() {
+
     }
 
     getPlaces() {

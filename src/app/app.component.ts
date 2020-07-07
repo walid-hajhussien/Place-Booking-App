@@ -5,6 +5,7 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AuthService} from './services/auth/auth.service';
 import {Router} from '@angular/router';
+import {PlacesService} from './services/places/places.service';
 
 @Component({
     selector: 'app-root',
@@ -17,9 +18,11 @@ export class AppComponent {
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private placesService: PlacesService
     ) {
         this.initializeApp();
+        this.placesService.fetchPlaces().subscribe();
     }
 
     initializeApp() {
