@@ -37,6 +37,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
         // note : add event
         this.placeChangeEvent = this.placesService.changePlacesEvent.subscribe((places) => {
             this.places = places;
+            this.selected = (places.length > 0) ? places[0] : undefined;
         });
     }
 

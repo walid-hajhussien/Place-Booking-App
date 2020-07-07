@@ -3,7 +3,7 @@ import {PlaceModel} from '../../models/placeModel/place.model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +13,9 @@ export class PlacesService {
     private _places: PlaceModel[];
 
     constructor(private httpClient: HttpClient) {
+        this.fetchPlaces().subscribe((r) => {
+
+        })
         this._places = [
             new PlaceModel('Zarqa', 'Big city at Jordan!',
                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Qurtobah%2C_Az-Zarqa%2C_Jordan_-_panoramio_%283%29.jpg/1200px-Qurtobah%2C_Az-Zarqa%2C_Jordan_-_panoramio_%283%29.jpg',
@@ -64,5 +67,33 @@ export class PlacesService {
             this.placesChangeBehavior.next([...this._places]);
             observe.next(true);
         });
+    }
+
+    fetchPlaces(): Observable<PlaceModel[]> {
+        return this.httpClient.get<FbPlacesInterface>(environment.firebasePlaces).pipe(map((response) => {
+            if (!response) {
+                this._places = [];
+                this.placesChangeBehavior.next(this._places);
+                return  this._places;
+            }
+            const fetchPlaces: PlaceModel[] = [];
+            for (const k of Object.keys(response)) {
+                const fbPlace = response[k];
+                const place = new PlaceModel(
+                    fbPlace.title,
+                    fbPlace.description,
+                    fbPlace.imageUrl,
+                    fbPlace.price,
+                    fbPlace.availableFrom,
+                    fbPlace.availableTo,
+                    fbPlace.userId,
+                    k
+                );
+                fetchPlaces.push(place);
+            }
+            this._places = fetchPlaces;
+            this.placesChangeBehavior.next(this._places);
+            return fetchPlaces;
+        }));
     }
 }
