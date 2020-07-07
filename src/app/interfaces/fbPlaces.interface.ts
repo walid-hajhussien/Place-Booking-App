@@ -4,8 +4,8 @@ interface FbPlacesInterface {
         description: string,
         imageUrl: string,
         price: number,
-        availableFrom: Date,
-        availableTo: Date,
+        availableFrom: string,
+        availableTo: string,
         userId: string,
     };
 }

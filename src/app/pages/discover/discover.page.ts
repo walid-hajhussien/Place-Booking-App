@@ -5,6 +5,7 @@ import {IonInfiniteScroll, IonVirtualScroll, MenuController} from '@ionic/angula
 import * as faker from 'faker';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth/auth.service';
+import {delay} from 'rxjs/operators';
 
 @Component({
     selector: 'app-discover',
@@ -19,8 +20,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
     public filterType: 'all' | 'bookable';
     public userId: string;
 
+
     constructor(private placesService: PlacesService, private menuController: MenuController, private authService: AuthService) {
-        this.type = 'infinite-scroll&virtual-scroll';
+        this.type = 'virtual-scroll';
         this.filterType = 'all';
         this.userId = this.authService.userId;
     }
@@ -29,11 +31,6 @@ export class DiscoverPage implements OnInit, OnDestroy {
     @ViewChild(IonVirtualScroll) virtualScroll: IonVirtualScroll;
 
     ngOnInit() {
-        this.places = this.placesService.places;
-        this.selected = this.places[0];
-        if (this.type === 'virtual-scroll') {
-            this.getPlaces();
-        }
         // note : add event
         this.placeChangeEvent = this.placesService.changePlacesEvent.subscribe((places) => {
             this.places = places;
