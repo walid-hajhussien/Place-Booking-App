@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {LoadingController, NavController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {delay, map, take} from 'rxjs/operators';
 
@@ -16,17 +16,20 @@ export class EditOfferPage implements OnInit {
     place: PlaceModel;
     placeId: string;
     isLoading: boolean;
+    isError: boolean;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private navController: NavController,
                 private placesService: PlacesService,
-                private loadingController: LoadingController) {
+                private loadingController: LoadingController,
+                private alertController: AlertController) {
         this.isLoading = false;
 
     }
 
     ngOnInit() {
         this.isLoading = true;
+        this.isError = false;
         this.activatedRoute.paramMap.pipe(map((paramMap: ParamMap) => {
             if (!paramMap.has('id')) {
                 this.isLoading = false;
@@ -34,8 +37,6 @@ export class EditOfferPage implements OnInit {
                 return;
             }
             this.placeId = paramMap.get('id');
-
-            // this.place = this.placesService.getPlaceById(this.placeId);
             return this.placeId;
         })).subscribe((id: string) => {
             this.placesService.getPlaceByIdOnline(this.placeId).subscribe((place) => {
@@ -63,6 +64,21 @@ export class EditOfferPage implements OnInit {
                     })
                 });
                 this.isLoading = false;
+            }, (error) => {
+                this.isLoading = false;
+                this.isError = true;
+                this.alertController.create({
+                    header: 'An Error occurred!',
+                    message: 'Place not found!',
+                    buttons: [{
+                        text: 'Ok', handler: () => {
+                            this.navController.navigateRoot(['/places/offers']);
+                        }
+                    }]
+                }).then((alertEl) => {
+                    alertEl.present();
+                })
+                console.log(error);
             });
         });
     }

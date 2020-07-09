@@ -13,6 +13,9 @@ export class OffersPage implements OnInit {
     offerPlaces: PlaceModel[];
 
     constructor(private placesService: PlacesService, private router: Router, private navController: NavController) {
+        this.placesService.changePlacesEvent.subscribe((places) => {
+            this.offerPlaces = places;
+        })
     }
 
     ngOnInit() {

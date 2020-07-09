@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {PlaceModel} from '../../models/placeModel/place.model';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {delay, map, tap} from 'rxjs/operators';
+import {catchError, delay, map, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -38,10 +38,14 @@ export class PlacesService {
 
     getPlaceByIdOnline(id: string): Observable<any> {
         return this.httpClient.get<FbUpdatePlacesInterface>(`${environment.firebaseUpdatePlacesUrl}${id}.json`).pipe(map((response) => {
-            return new PlaceModel(response.title, response.description,
-                response.imageUrl, +response.price, new Date(response.availableFrom), new Date(response.availableTo), response.userId, id);
-        }), tap((res) => {
-            console.log(res);
+            if (!response) {
+               throw new Error('not valid');
+            } else {
+                return new PlaceModel(response.title, response.description,
+                    response.imageUrl, +response.price, new Date(response.availableFrom),
+                    new Date(response.availableTo), response.userId, id);
+            }
+
         }));
     }
 
@@ -67,13 +71,6 @@ export class PlacesService {
             this.placesChangeBehavior.next([...this._places]);
             return response;
         }));
-        // return new Observable((observe) => {
-        //     this._places = this._places.map((place) => {
-        //         return (newPlace.id === place.id) ? newPlace : place;
-        //     });
-        //     this.placesChangeBehavior.next([...this._places]);
-        //     observe.next(true);
-        // });
     }
 
     fetchPlaces(): Observable<PlaceModel[]> {
