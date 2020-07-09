@@ -5,7 +5,8 @@
 export const environment = {
     production: false,
     firebaseAddPlacesUrl: 'https://booking-app-f44c9.firebaseio.com/places.json',
-    firebaseUpdatePlacesUrl: 'https://booking-app-f44c9.firebaseio.com/places/'
+    firebaseUpdatePlacesUrl: 'https://booking-app-f44c9.firebaseio.com/places/',
+    firebaseAddBookingUrl: 'https://booking-app-f44c9.firebaseio.com/booking.json'
 };
 
 /*

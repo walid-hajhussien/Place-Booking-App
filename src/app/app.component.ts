@@ -6,6 +6,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AuthService} from './services/auth/auth.service';
 import {Router} from '@angular/router';
 import {PlacesService} from './services/places/places.service';
+import {BookingService} from './services/booking/booking.service';
 
 @Component({
     selector: 'app-root',
