@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingModel} from '../../models/bookingModel/booking.model';
-import {IonItemSliding} from '@ionic/angular';
+import {IonItemSliding, LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {AuthService} from '../../services/auth/auth.service';
@@ -16,7 +16,7 @@ export class BookingsPage implements OnInit, OnDestroy {
     private bookingSub: Subscription;
     public isLoading: boolean;
 
-    constructor(private bookingService: BookingService, private authService: AuthService) {
+    constructor(private bookingService: BookingService, private authService: AuthService, private loadingController: LoadingController) {
         this.isLoading = false;
     }
 
@@ -34,8 +34,16 @@ export class BookingsPage implements OnInit, OnDestroy {
     }
 
     onDeleteBooking(id: string, itemSliding: IonItemSliding) {
-        this.bookingService.deleteBooking(id);
-        itemSliding.close();
+        this.loadingController.create({
+            message: 'Deleting...'
+        }).then((loadEl) => {
+            itemSliding.close();
+            loadEl.present();
+            this.bookingService.deleteBooking(id).subscribe((res) => {
+                loadEl.dismiss();
+            });
+
+        })
     }
 
     ngOnDestroy(): void {

@@ -60,10 +60,15 @@ export class BookingService {
             }));
     }
 
-    deleteBooking(id: string): void {
-        this._bookings = this._bookings.filter((booking) => {
-            return booking.id !== id;
-        });
-        this._changeBookingEvent.next(this._bookings);
+    deleteBooking(id: string): Observable<boolean> {
+        return this.httpClient.delete(`${environment.firebaseBooking}${id}.json`).pipe(map((res) => {
+            console.log(res);
+            this._bookings = this._bookings.filter((booking) => {
+                return booking.id !== id;
+            });
+            this._changeBookingEvent.next(this._bookings);
+            return true;
+        }));
+
     }
 }
