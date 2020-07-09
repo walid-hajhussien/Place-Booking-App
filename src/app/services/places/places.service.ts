@@ -36,6 +36,15 @@ export class PlacesService {
         });
     }
 
+    getPlaceByIdOnline(id: string): Observable<any> {
+        return this.httpClient.get<FbUpdatePlacesInterface>(`${environment.firebaseUpdatePlacesUrl}${id}.json`).pipe(map((response) => {
+            return new PlaceModel(response.title, response.description,
+                response.imageUrl, +response.price, new Date(response.availableFrom), new Date(response.availableTo), response.userId, id);
+        }), tap((res) => {
+            console.log(res);
+        }));
+    }
+
     addPlace(place: PlaceModel): Observable<{ name: string }> {
         // note : the Id will be add from firebase
         return this.httpClient.post<{ name: string }>(environment.firebaseAddPlacesUrl, place)
