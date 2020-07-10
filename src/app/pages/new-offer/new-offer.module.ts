@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 import {NewOfferPageRoutingModule} from './new-offer-routing.module';
 
 import {NewOfferPage} from './new-offer.page';
+import {ShareModule} from '../../Modules/shareModule/share.module';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import {NewOfferPage} from './new-offer.page';
         FormsModule,
         IonicModule,
         ReactiveFormsModule,
-        NewOfferPageRoutingModule
+        NewOfferPageRoutingModule,
+        ShareModule
     ],
     declarations: [NewOfferPage]
 })
