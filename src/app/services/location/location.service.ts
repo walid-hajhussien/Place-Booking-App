@@ -27,4 +27,12 @@ export class LocationService {
                 return geoData.results[0].formatted_address;
             }));
     }
+
+    getMapImageUrl(lat: number, lng: number, zoom: number): string {
+        // note:  you should enable billing
+        // return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=500x300&maptype=roadmap
+        //         &markers=color:red%7Clabel:Place%7C${lat},${lng}
+        //         &key=${environment.googleApiKey}`;
+        return 'https://i.stack.imgur.com/dApg7.png';
+    }
 }
