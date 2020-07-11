@@ -4,6 +4,7 @@ import {LocationModalComponent} from '../location-modal/location-modal.component
 import {LocationService} from '../../services/location/location.service';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {LocationInterface} from '../../interfaces/location.interface';
 
 @Component({
     selector: 'app-location',

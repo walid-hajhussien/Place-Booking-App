@@ -61,6 +61,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
                     new Date('2020-01-01'),
                     new Date('2020-12-31'),
                     faker.company.suffixes,
+                    {lat: 1, lng: 2, address: 'test', staticMapImageUrl: 'https://i.stack.imgur.com/dApg7.png'},
                     faker.address.zipCode()
                 ));
             }

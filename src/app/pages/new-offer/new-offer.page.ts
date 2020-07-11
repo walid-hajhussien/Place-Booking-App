@@ -5,6 +5,7 @@ import {PlacesService} from '../../services/places/places.service';
 import {PlaceModel} from '../../models/placeModel/place.model';
 import {LoadingController, NavController} from '@ionic/angular';
 import {delay, take} from 'rxjs/operators';
+import {LocationInterface} from '../../interfaces/location.interface';
 
 @Component({
     selector: 'app-new-offer',

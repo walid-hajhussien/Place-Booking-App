@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map, tap} from 'rxjs/operators';
+import {FbFetchBookingInterface} from '../../interfaces/fbFetchBooking.interface';
 
 @Injectable({
     providedIn: 'root'

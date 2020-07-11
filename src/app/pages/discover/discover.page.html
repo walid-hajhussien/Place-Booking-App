@@ -89,7 +89,6 @@
 
     <!-- virtual-scroll & infinite-scroll -->
     <ion-list *ngIf="type==='infinite-scroll&virtual-scroll'">
-
         <ion-virtual-scroll [items]="places" approxItemHeight="100px">
 
             <ion-item *virtualItem="let place" (click)="onSelect(place)" detail="true">

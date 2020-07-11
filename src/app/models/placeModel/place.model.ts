@@ -1,3 +1,5 @@
+import {LocationInterface} from '../../interfaces/location.interface';
+
 export class PlaceModel {
     constructor(
         public title: string,
