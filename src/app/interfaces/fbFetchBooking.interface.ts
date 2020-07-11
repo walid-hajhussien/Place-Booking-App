@@ -1,4 +1,4 @@
-interface FbFetchBookingInterface {
+export interface FbFetchBookingInterface {
     [id: string]: {
         bookedFrom: string,
         bookedTo: string,

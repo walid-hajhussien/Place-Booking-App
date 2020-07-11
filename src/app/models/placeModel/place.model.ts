@@ -7,6 +7,7 @@ export class PlaceModel {
         public availableFrom: Date,
         public availableTo: Date,
         public userId: string,
+        public location: LocationInterface,
         public id?: string,
     ) {
     }

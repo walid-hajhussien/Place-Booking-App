@@ -3,7 +3,9 @@ import {PlaceModel} from '../../models/placeModel/place.model';
 import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {FbUpdatePlacesInterface} from '../../interfaces/fbUpdatePlaces.interface';
 import {catchError, delay, map, tap} from 'rxjs/operators';
+import {FbFetchPlacesInterface} from '../../interfaces/fbFetchPlaces.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +20,7 @@ export class PlacesService {
     }
 
     get places(): PlaceModel[] {
-        console.log("get", this._places);
+        console.log('get', this._places);
         return [...this._places];
     }
 
@@ -39,11 +41,11 @@ export class PlacesService {
     getPlaceByIdOnline(id: string): Observable<any> {
         return this.httpClient.get<FbUpdatePlacesInterface>(`${environment.firebaseUpdatePlacesUrl}${id}.json`).pipe(map((response) => {
             if (!response) {
-               throw new Error('not valid');
+                throw new Error('not valid');
             } else {
                 return new PlaceModel(response.title, response.description,
                     response.imageUrl, +response.price, new Date(response.availableFrom),
-                    new Date(response.availableTo), response.userId, id);
+                    new Date(response.availableTo), response.userId, response.location, id);
             }
 
         }));
@@ -91,6 +93,7 @@ export class PlacesService {
                     new Date(fbPlace.availableFrom),
                     new Date(fbPlace.availableTo),
                     fbPlace.userId,
+                    fbPlace.location,
                     k
                 );
                 fetchPlaces.push(place);

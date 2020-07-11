@@ -1,4 +1,6 @@
-interface FbFetchPlacesInterface {
+import {LocationInterface} from './location.interface';
+
+export interface FbFetchPlacesInterface {
     [id: string]: {
         title: string,
         description: string,
@@ -7,5 +9,6 @@ interface FbFetchPlacesInterface {
         availableFrom: string,
         availableTo: string,
         userId: string,
+        location: LocationInterface
     };
 }

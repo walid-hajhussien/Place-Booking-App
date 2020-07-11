@@ -41,6 +41,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
                 this.isLoading = false;
                 this.places = places;
                 this.selected = (places.length > 0) ? places[0] : undefined;
+                console.log(this.selected);
             }
         });
     }

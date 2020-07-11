@@ -1,4 +1,6 @@
-interface FbUpdatePlacesInterface {
+import {LocationInterface} from './location.interface';
+
+export interface FbUpdatePlacesInterface {
     title: string;
     description: string;
     imageUrl: string;
@@ -6,4 +8,5 @@ interface FbUpdatePlacesInterface {
     availableFrom: string;
     availableTo: string;
     userId: string;
+    location: LocationInterface;
 }

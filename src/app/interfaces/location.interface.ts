@@ -1,7 +1,7 @@
-interface LocationInterface {
-    lat: number,
-    lng: number,
-    address: string,
-    staticMapImageUrl: string
+export interface LocationInterface {
+    lat: number;
+    lng: number;
+    address: string;
+    staticMapImageUrl: string;
 
 }
