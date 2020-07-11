@@ -17,8 +17,15 @@ export class LocationComponent implements OnInit {
 
     onPickLocation() {
         this.modalController.create({component: LocationModalComponent}).then((modalEl) => {
+            modalEl.onDidDismiss().then((modalData) => {
+                console.log(modalData);
+            })
             modalEl.present();
         });
+    }
+
+    private getAddress() {
+
     }
 
 }

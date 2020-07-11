@@ -17,7 +17,7 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
     }
 
     onCancel() {
-        this.modalController.dismiss();
+        this.modalController.dismiss(null, 'cancel');
     }
 
     ngAfterViewInit(): void {
@@ -32,6 +32,16 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
             googleMaps.event.addListenerOnce(maps, 'idle', () => {
                 this.renderer2.addClass(mapEl, 'visible');
             });
+            // note : add click event
+            maps.addListener('click', event => {
+                console.log(event);
+                const clickLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+                this.modalController.dismiss(clickLocation, 'PickLocation');
+            });
+
         }).catch((error) => {
             console.log('error load the SDK');
         });
@@ -46,7 +56,7 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
         return new Promise((resolve, reject) => {
             // note : add map sdk to the dom
             const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.mapApi}&callback=initMap`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleApiKey}&callback=initMap`;
             script.async = true;
             script.defer = true;
             document.body.appendChild(script);

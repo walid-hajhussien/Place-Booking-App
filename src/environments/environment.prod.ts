@@ -4,5 +4,6 @@ export const environment = {
     firebaseUpdatePlacesUrl: 'https://booking-app-f44c9.firebaseio.com/places/',
     firebaseAddBookingUrl: 'https://booking-app-f44c9.firebaseio.com/booking.json',
     firebaseBooking: 'https://booking-app-f44c9.firebaseio.com/booking/',
-    mapApi: 'AIzaSyC5FGTZ8PWsSzfNLqwlBDuOqxx6QPKXxMg'
+    googleApiKey: 'AIzaSyC5FGTZ8PWsSzfNLqwlBDuOqxx6QPKXxMg',
+    geocodingApi: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY'
 };
