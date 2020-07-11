@@ -8,6 +8,7 @@ import {AuthService} from '../../services/auth/auth.service';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingModel} from '../../models/bookingModel/booking.model';
 import {delay, take} from 'rxjs/operators';
+import {LocationModalComponent} from '../../components/location-modal/location-modal.component';
 
 @Component({
     selector: 'app-place-detail',
@@ -103,4 +104,19 @@ export class PlaceDetailPage implements OnInit {
         });
 
     }
+
+    onShowFullMap() {
+        this.modalController.create({
+            component: LocationModalComponent,
+            componentProps: {
+                center: {lat: this.place.location.lat, lng: this.place.location.lng},
+                selectable: false,
+                closeButtonText: 'Close',
+                title: this.place.location.address
+            }
+        }).then(locationEl => {
+            locationEl.present();
+        })
+    }
+
 }
