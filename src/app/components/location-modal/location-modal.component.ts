@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {environment} from '../../../environments/environment';
 
@@ -7,8 +7,10 @@ import {environment} from '../../../environments/environment';
     templateUrl: './location-modal.component.html',
     styleUrls: ['./location-modal.component.scss'],
 })
-export class LocationModalComponent implements OnInit, AfterViewInit {
+export class LocationModalComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('map', {static: true}) mapElementRef: ElementRef;
+    clickListener: any;
+    googleMap: any;
 
     constructor(private modalController: ModalController, private renderer2: Renderer2) {
     }
@@ -22,6 +24,7 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.addGoogleMapsSdk().then((googleMaps) => {
+            this.googleMap = googleMaps;
             const mapEl = this.mapElementRef.nativeElement;
             // note : adding the map
             const maps = new googleMaps.Map(mapEl, {
@@ -33,7 +36,7 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
                 this.renderer2.addClass(mapEl, 'visible');
             });
             // note : add click event
-            maps.addListener('click', event => {
+            this.clickListener = maps.addListener('click', event => {
                 console.log(event);
                 const clickLocation = {
                     lat: event.latLng.lat(),
@@ -70,6 +73,12 @@ export class LocationModalComponent implements OnInit, AfterViewInit {
                 }
             };
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.clickListener) {
+            this.googleMap.event.removeListener(this.clickListener);
+        }
     }
 
 }

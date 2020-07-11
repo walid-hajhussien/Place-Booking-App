@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {LocationModalComponent} from '../location-modal/location-modal.component';
 import {LocationService} from '../../services/location/location.service';
@@ -12,6 +12,7 @@ import {of} from 'rxjs';
 })
 export class LocationComponent implements OnInit {
     private pickLocation: LocationInterface;
+    @Output() locationPick = new EventEmitter<LocationInterface>();
 
     constructor(private modalController: ModalController, private locationService: LocationService) {
     }
@@ -22,6 +23,9 @@ export class LocationComponent implements OnInit {
     onPickLocation() {
         this.modalController.create({component: LocationModalComponent}).then((modalEl) => {
             modalEl.onDidDismiss().then((modalData) => {
+                if (modalData.role === 'cancel') {
+                    return;
+                }
                 this.pickLocation = {
                     lat: modalData.data.lat,
                     lng: modalData.data.lng,
@@ -33,11 +37,15 @@ export class LocationComponent implements OnInit {
                     return of(this.locationService.getMapImageUrl(this.pickLocation.lat, this.pickLocation.lng, 14));
                 })).subscribe(imageMapUrl => {
                     this.pickLocation.staticMapImageUrl = imageMapUrl;
-                    console.log(this.pickLocation);
+                    this.locationPick.emit(this.pickLocation);
                 });
             });
             modalEl.present();
         });
+    }
+
+    onChangeMap() {
+        this.onPickLocation();
     }
 
 }
